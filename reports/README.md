@@ -1,0 +1,1 @@
+Reports contain **analytical** outputs for human-authored final papers/slides. Save numerical raw outputs under `results/` and plots/tables under `reports/figures/` and `reports/tables/` with run IDs. Do not overwrite old runs silently.

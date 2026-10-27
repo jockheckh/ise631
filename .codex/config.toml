@@ -1,0 +1,9 @@
+# Scoped to this trusted repository. No model selection: inherit the local Codex model.
+# Use a locally supported high reasoning level when running demanding theory tasks.
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+web_search = "disabled"  # Source-first work; enable external research explicitly if needed.
+
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 3

@@ -1,0 +1,15 @@
+id,prompt_page,instructor_requirement,related_questions,milestone,evidence_required,evidence_path,reviewer,status
+I01,1,"Explain finite-state MDP Bellman LP, dual occupancy measure, flow conservation, complementary slackness",RQ1/RQ3,IPR 2,Formulation plus independently checked dual derivation,,,planned
+I02,1,"Explain network revenue management MDP, remaining capacity/time, and why the exact DP is intractable",RQ1/RQ4,IPR 2,State/action/transition definition and growth analysis,,,planned
+I03,1,"Explain deterministic fluid LP, static bid prices, and limitations",RQ2/RQ5,IPR 2,Fluid primal-dual model and static policy,,,planned
+I04,1,"Explain affine ALP, dynamic bid prices, exponentially many constraints, and paper algorithm",RQ1/RQ3/RQ4,IPR 2,Sourced affine ALP plus exact algorithm description,,,planned
+I05,2,Familiarize with MDPs and main paper methodology and solution approach,RQ1/RQ3,IPR 2,Paper equation and model notes,,,planned
+I06,2,"Relate main paper to course LP topics, especially how bid prices computed",RQ3,IPR 2,Course-concept mapping with correct primal/dual signs,,,planned
+I07,2,Recognize main paper result and understand proof technique,RQ2,IPR 2,Formal theorem hypotheses and independently checked proof outline,,,planned
+I08,2,Numerically test deterministic LP and static and dynamic bid-price policies on synthetic instances,RQ5,IPR 3,"Reproducible code, cases, raw data and comparison figures",,,planned
+I09,2,Explain benefit of approximate value function,RQ1,IPR 2,Approximation analysis and small illustrative instance,,,planned
+I10,2,Explain why ALP bound dominates deterministic fluid bound,RQ2,IPR 2,"Sourced theorem, derivation, sanity checks",,,planned
+I11,2,"Define pricing/separation subproblem, difficulty, and why",RQ3/RQ4,IPR 2,Formal subproblem with complexity reasoning from paper,,,planned
+I12,2,"Quantify gap between dynamic policy, MDP optimum, and fluid upper bound",RQ5,IPR 3,Tidy benchmark results with correct bound/estimate labels,,,planned
+I13,2,"Critique paper: reviewer comments, modeling considerations, alternatives and benchmarks",RQ4/RQ5/RQ6,IPR 3/Final,Critical review with supported alternative benchmark and caveats,,,planned
+I14,2,Come up with independent questions beyond instructor examples,RQ4/RQ6,IPR 1/Final,Approved RQs including scalability/truncation and application,,,planned

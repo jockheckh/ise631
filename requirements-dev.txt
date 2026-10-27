@@ -1,0 +1,9 @@
+# Python environment for research and tests. Resolve/pin versions after WSL preflight.
+gurobipy
+numpy
+pandas
+scipy
+matplotlib
+pytest
+pypdf
+psutil

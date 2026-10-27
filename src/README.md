@@ -1,0 +1,1 @@
+Code will be placed here **after** the article's exact model, constraints, objective, and stochastic conventions are established. Proposed modules: `exact_mdp.py`, `fluid_lp.py`, `affine_alp.py`, `pricing_separation.py`, `policies.py`, `simulation.py`. Do not treat these names as proof of implementation.

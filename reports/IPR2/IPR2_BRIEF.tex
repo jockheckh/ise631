@@ -1,0 +1,392 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Boadilla}
+\usecolortheme{default}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,booktabs,tabularx,array}
+\definecolor{navy}{RGB}{22,48,75}
+\definecolor{teal}{RGB}{0,111,112}
+\definecolor{muted}{RGB}{90,102,111}
+\setbeamercolor{structure}{fg=teal}
+\setbeamercolor{frametitle}{fg=navy}
+\setbeamercolor{title}{fg=navy}
+\setbeamercolor{footline}{fg=muted}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{itemize items}[circle]
+\setlength{\tabcolsep}{4pt}
+\newcommand{\src}[1]{\par\vfill{\tiny\color{muted}Source: #1\par}}
+\newcommand{\status}[1]{{\color{teal}\textbf{#1}}}
+\newcommand{\R}{\mathcal R}
+\newcommand{\U}{\mathcal U}
+\newcommand{\E}{\mathbb E}
+\title{Dynamic Bid Prices in Revenue Management}
+\subtitle{ISE 631 IPR 2: theory, verification plan, and experimental design}
+\author{Herbert Jockheck}
+\date{Fall 2026}
+
+\begin{document}
+
+% Main slide 1 of 10
+\begin{frame}[t]{Research scope and current progress}
+\small
+\textcolor{teal}{\textbf{Dynamic Bid Prices in Revenue Management, ISE 631 IPR 2}}\par
+\vspace{0.45em}
+\textbf{Question groups}
+\begin{tabularx}{\textwidth}{@{}p{0.20\textwidth}X@{}}
+\toprule
+Theory (RQ1--3) & What does the affine value approximation retain? Why is its bound stronger? How do dual prices and column generation work?\\
+Computation (RQ4--5) & How do size and truncation affect cost and quality? When do dynamic prices improve expected reward?\\
+Application (RQ6) & Does the resource-allocation model transfer to surveillance missions?\\
+\bottomrule
+\end{tabularx}
+\vspace{0.8em}
+\begin{tabularx}{\textwidth}{@{}p{0.30\textwidth}X@{}}
+\textbf{Formulations and proofs} & Source analysis drafted; formal audit artifact pending.\\
+\textbf{Implementations and tests} & Exact DP, LPs, policies, and assertions pending.\\
+\textbf{Experiments and replication} & Design proposed; no project run or published-table reproduction.\\
+\end{tabularx}
+\src{Approved questions: \texttt{RESEARCH\_QUESTIONS.md}; phase gates: \texttt{PLANS.md}.}
+\end{frame}
+
+% Main slide 2 of 10
+\begin{frame}[t]{Finite-horizon network revenue management}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.21\textwidth}X@{}}
+\toprule
+State & Period $t\in\{1,\ldots,T\}$ and remaining resource vector $r\in\R=\prod_{i=1}^m\{0,\ldots,c_i\}$.\\
+Arrival & Class $j$ arrives with probability $p_{tj}$; no arrival has probability $1-\sum_jp_{tj}$. At most one request arrives per period.\\
+Action & $u_j\in\{0,1\}$ says whether class $j$ would be accepted; $a_{ij}u_j\le r_i$ for every resource $i$ and class $j$.\\
+Reward and next state & An accepted class $j$ earns $f_j$ and moves to $r-A_j$; otherwise capacity stays at $r$.\\
+\bottomrule
+\end{tabularx}
+\vspace{0.9em}
+\textbf{Decision principle:} accept revenue now only when it covers the future value of the capacity consumed.
+\src{Adelman (2007), pp. 648--649, \S2.1 and eqs. (1)--(2).}
+\end{frame}
+
+% Main slide 3 of 10
+\begin{frame}[t]{Exact MDP and its linear program}
+\small
+\begin{columns}[T,onlytextwidth]
+\column{0.53\textwidth}
+\textbf{Bellman recursion}\par
+$v_{T+1}(r)=0$ and
+\[
+v_t(r)=v_{t+1}(r)+\sum_{j:r\ge A_j}p_{tj}
+\bigl[f_j-\Delta_{t+1,j}(r)\bigr]_+ ,
+\]
+\[
+\Delta_{t+1,j}(r)=v_{t+1}(r)-v_{t+1}(r-A_j).
+\]
+For a feasible arrival, accept if
+\[f_j\ge v_{t+1}(r)-v_{t+1}(r-A_j).\]
+\column{0.43\textwidth}
+\textbf{Bellman LP (D0)}\par
+Minimize $v_1(c)$ over unrestricted $v_t(r)$ subject to
+\[
+v_t(r)\ge q_t(r,u)+\E[v_{t+1}(R_{t+1})\mid r,u]
+\]
+for every $t,r,u\in\U(r)$.
+\medskip\par
+Its exact dual conserves probability at every time-state pair. Complementary slackness identifies optimal actions on occupied states.
+\end{columns}
+\src{Adelman (2007), p. 649, eqs. (1)--(3); occupancy dual independently derived in backup slide A2.}
+\end{frame}
+
+% Main slide 4 of 10
+\begin{frame}[t]{Fluid LP and affine approximate LP}
+\small
+\begin{columns}[T,onlytextwidth]
+\column{0.44\textwidth}
+\textbf{Fluid LP: expected acceptances $Y_j$}
+\[
+\max_{Y\ge0}\ \sum_j f_jY_j\quad
+\text{s.t. } AY\le c,\quad
+Y_j\le\sum_t p_{tj}.
+\]
+Resource dual prices $\lambda_i\ge0$ give the static test
+\[f_j\ge A_j^\top\lambda.\]
+This solve aggregates demand over time.
+\column{0.52\textwidth}
+\textbf{Affine value approximation}
+\[\hat v_t(r)=\theta_t+b_t^\top r.\]
+Substitution in (D0) gives (D1):
+\[
+\begin{aligned}
+\theta_t-\theta_{t+1}+(b_t-b_{t+1})^\top r
+\ge \sum_j p_{tj}(f_j-b_{t+1}^\top A_j)u_j.
+\end{aligned}
+\]
+The policy accepts a feasible class $j$ if $f_j\ge b_{t+1}^\top A_j$.
+\end{columns}
+\medskip\par
+Within one affine solve, bid prices vary by period. Re-solving can update the trajectory after capacity changes.
+\src{Adelman (2007), p. 650, eqs. (4)--(6), and p. 652, eqs. (14)--(17).}
+\end{frame}
+
+% Main slide 5 of 10
+\begin{frame}[t]{Two upper-bound arguments}
+\small
+\begin{center}
+{\Large $z^{LP}\ \ge\ z^{P1}\ \ge\ v_1(c)$}
+\end{center}
+\begin{enumerate}
+\item \textbf{Affine LP versus exact MDP.} Every feasible (D1) function satisfies all Bellman inequalities. Backward induction makes it an upper bound on $v_t(r)$. Restricting the value-function family cannot lower the minimum below $v_1(c)$.
+\item \textbf{Fluid LP versus affine LP.} Given feasible (P1) weights $X$, set $Y_j=\sum_{t,r,u}p_{tj}u_jX_{t,r,u}$. P1's mass and resource-moment equations imply $Y_j\le\sum_t p_{tj}$ and $AY\le c$. The two objectives agree.
+\end{enumerate}
+\medskip\par
+\textbf{Structural result:} under $c_i>0$ and $p_{tj}>0$, a monotone optimal trajectory $b_{t,i}\ge b_{t+1,i}$ exists. An arbitrary optimal solver output need not be monotone.
+\src{Adelman (2007), pp. 652--655, Theorems 1--2 and eqs. (22)--(29).}
+\end{frame}
+
+% Main slide 6 of 10
+\begin{frame}[t]{Published example and planned verification}
+\small
+\textbf{Example 1:} one resource, one seat, one class, $f=a=1$, $T=2$, and $p_1=p_2=0.5$.
+\[v_2(1)=0.5,\qquad v_1(1)=0.5+0.5(0.5)=0.75.\]
+\begin{center}
+\begin{tabular}{@{}lcl@{}}
+\toprule
+Formulation & Value & Evidence status\\
+\midrule
+Exact MDP & 0.75 & Hand calculation; published example\\
+Affine LP (P1) & 0.75 & Published example; reproduction planned\\
+Fluid LP & 1.00 & Hand calculation; published example\\
+\bottomrule
+\end{tabular}
+\end{center}
+\textbf{Verification gate:} independently compare exact DP, exact LP primal/dual, fluid LP, and full affine LP on this case and a two-resource network. Test zero demand, zero capacity, terminal decisions, and infeasible arrivals.
+\src{Adelman (2007), p. 653, Example 1. Project-generated solver results are pending.}
+\end{frame}
+
+% Main slide 7 of 10
+\begin{frame}[t]{Column generation and its certificate}
+\small
+\textbf{Master:} start (P1) with the feasible no-acceptance columns. Solve the restricted master and obtain $\theta_t,b_t$.
+\medskip\par
+\textbf{Pricing:} for each period maximize reduced profit over feasible $(r,u)$:
+\[
+\rho_t(r,u)=\sum_j p_{tj}(f_j-b_{t+1}^{\top}A_j)u_j
+-(b_t-b_{t+1})^\top r-\theta_t+\theta_{t+1}.
+\]
+Add a column when its reduced profit is positive, then re-solve. Adelman formulates the period problem as an integer program.
+\medskip\par
+\textbf{Hand pricing check:} in Example 1, zero initial dual values give reduced profit $0.5$ for the period-2 accept column. Adding it raises the restricted objective from $0$ to $0.5$.
+\medskip\par
+\textbf{Stopping certificate (Proposition 3):}
+\[
+Z_{\Lambda}\le z^{P1}\le Z_{\Lambda}+\sum_{t=1}^{T}\rho_t^*,
+\quad \rho_t^*=\max_{r,u}\rho_t(r,u).
+\]
+$Z_{\Lambda}$ alone does not certify an upper bound on the exact MDP.
+\src{Adelman (2007), pp. 650--651, Proposition 3; pp. 655--657, \S4.4 and eqs. (33)--(36).}
+\end{frame}
+
+% Main slide 8 of 10
+\begin{frame}[t]{Proposed experiment design for IPR 3}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.21\textwidth}X@{}}
+\toprule
+Factors & Resources, horizon, load, fare spread, arrival timing, and single- versus multi-resource products. Start with exactly enumerable cases.\\
+Comparators & Exact DP where tractable; fluid and certified affine bounds; fixed static and dynamic policies; separately labeled re-solving variants.\\
+Outcomes & Bound gaps, exact or estimated policy reward, paired dynamic-minus-static difference, runtime, memory, iterations, and generated columns.\\
+Inference & Common arrival paths and predeclared seeds; report 95\% intervals for each policy mean and for paired differences. Use absolute gaps when exact value is zero.\\
+\bottomrule
+\end{tabularx}
+\medskip\par
+\textbf{Truncation study:} record which state, column, or horizon restriction is used and whether a valid pricing certificate survives.
+\src{Proposed design; no project experiment has run. Adelman (2007), pp. 657--660, supplies comparison context.}
+\end{frame}
+
+% Main slide 9 of 10
+\begin{frame}[t]{Surveillance resource allocation as a possible application}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.40\textwidth}X@{}}
+\toprule
+Revenue management & Candidate mission-allocation analogue\\
+\midrule
+Finite resource capacity & Aircraft, sensor, or operator availability\\
+Customer class and arrival & Mission type and uncertain request arrival\\
+Fare and resource use & Assigned mission value and asset consumption\\
+Bid price & Opportunity cost of committing a scarce asset\\
+\bottomrule
+\end{tabularx}
+\medskip\par
+\textbf{Model checks:} Does capacity remain unavailable after use? Can several requests arrive together? Is utility additive and defensible? If these fail, the original MDP needs structural changes.
+\medskip\par
+\status{IPR 2 scope: conceptual mapping only.} Numerical application remains outside the current project gate.
+\src{Application hypothesis, not a result from Adelman (2007); project gate in \texttt{PLANS.md}.}
+\end{frame}
+
+% Main slide 10 of 10
+\begin{frame}[t]{IPR 3 gates and decisions requested}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.23\textwidth}X@{}}
+\toprule
+Next evidence gate & Source-linked proof notes; exact DP and LP agreement; fluid/static tests; full small affine LP; pricing versus exhaustive search; paired policy comparisons.\\
+Professor decision 1 & Is planned numerical verification sufficient for IPR 2, given that project solver evidence is not yet available?\\
+Professor decision 2 & What ALP and column-generation implementation depth is expected by IPR 3?\\
+Professor decision 3 & What level of published-table replication is expected, and which experiment factors should be fixed?\\
+Scope confirmation & Keep the surveillance discussion conceptual until mandatory evidence and separate approval are complete.\\
+\bottomrule
+\end{tabularx}
+\src{Course prompt, p. 2; project phase sequence in \texttt{PLANS.md}.}
+\end{frame}
+
+\appendix
+
+\begin{frame}[t]{A1. Full transition and Bellman model}
+\small
+Let $\U(r)=\{u\in\{0,1\}^n:a_{ij}u_j\le r_i\ \forall i,j\}$,
+$p_{t0}=1-\sum_jp_{tj}$, and $q_t(r,u)=\sum_jp_{tj}f_ju_j$. Then
+\[
+P_t(r'\mid r,u)=p_{t0}\mathbf1\{r'=r\}
++\sum_jp_{tj}\mathbf1\{r'=r-A_ju_j\}.
+\]
+Overlapping next states add their probabilities. With $v_{T+1}\equiv0$,
+\[
+v_t(r)=\max_{u\in\U(r)}\left\{q_t(r,u)+\sum_{r'}P_t(r'\mid r,u)v_{t+1}(r')\right\}.
+\]
+Initial state is $c$ in period 1. No discount factor applies to this finite-horizon model.
+\src{Adelman (2007), pp. 648--649, eq. (1); transition notation derived.}
+\end{frame}
+
+\begin{frame}[t]{A2. Exact finite-horizon Bellman LP and occupancy dual}
+\footnotesize
+\textbf{Primal (D0):} $\min v_1(c)$, with $v_t(r)\in\mathbb R$, $v_{T+1}=0$, and
+\[v_t(r)-\sum_{r'}P_t(r'\mid r,u)v_{t+1}(r')\ge q_t(r,u)
+\quad\forall t,r\in\R_t,u\in\U(r).\]
+\textbf{Derived dual:} $x_t(r,u)\ge0$ and
+\[
+\max\sum_{t,r,u}q_t(r,u)x_t(r,u)
+\]
+subject to
+\[
+\sum_u x_1(c,u)=1,\qquad
+\sum_u x_t(r,u)=\sum_{s,u}P_{t-1}(r\mid s,u)x_{t-1}(s,u)
+\quad\forall t=2,\ldots,T,\ r\in\R_t.
+\]
+Strong duality gives the exact initial value. Positive $x_t(r,u)$ makes its Bellman inequality tight.
+\src{Adelman (2007), p. 649, eq. (3); dual independently derived, not labeled P0 in the paper.}
+\end{frame}
+
+\begin{frame}[t]{A3. Instructor's discounted MDP LP}
+\small
+For finite states $S$, actions $A(s)$, discount $0\le\gamma<1$, and initial weight $\nu\ge0$:
+\[
+\begin{aligned}
+\min_{V\in\mathbb R^{S}}\quad&\sum_s\nu(s)V(s)\\
+\text{s.t.}\quad&V(s)-\gamma\sum_{s'}P(s'\mid s,a)V(s')\ge r(s,a)
+&&\forall s,a\in A(s).
+\end{aligned}
+\]
+The occupancy dual maximizes $\sum_{s,a}r(s,a)x(s,a)$ over $x\ge0$ with
+\[
+\sum_a x(s,a)-\gamma\sum_{s',a'}P(s\mid s',a')x(s',a')=\nu(s)
+\quad\forall s.
+\]
+$x$ counts $\nu$-weighted discounted visits. Complementary slackness identifies optimal actions on occupied states. With $\nu(s)>0$ for all $s$, the minimizing value vector is $V^*$ everywhere.
+\src{ISE 631 instructor prompt, p. 1; dual and full-support qualification derived.}
+\end{frame}
+
+\begin{frame}[t]{A4. Fluid primal, dual, and policy distinction}
+\small
+Let $d_j=\sum_t p_{tj}$. The fluid primal is
+\[
+\max_{Y\ge0}\ \sum_jf_jY_j\quad
+\text{s.t. } AY\le c,\quad Y_j\le d_j\ \forall j.
+\]
+Its dual is
+\[
+\min_{\lambda,\mu\ge0}\ c^\top\lambda+d^\top\mu
+\quad\text{s.t. } A_j^\top\lambda+\mu_j\ge f_j\ \forall j.
+\]
+Capacity shadow price $\lambda_i$ is nonnegative. Complementary slackness characterizes primal-dual optima; an online rule accepting when $f_j\ge A_j^\top\lambda$ is a policy constructed from these prices, with separate performance to be evaluated.
+\src{Adelman (2007), p. 650, eqs. (4)--(6) and displayed dual.}
+\end{frame}
+
+\begin{frame}[t]{A5. Full affine Bellman LP (D1)}
+\small
+With $\R_1=\{c\}$, $\R_t=\R$ for $t=2,\ldots,T$, and
+$\theta_{T+1}=0$, $b_{T+1}=0$, the raw affine coefficients
+$\theta_t,b_{t,i}\in\mathbb R$ are free. The program is
+\[
+\min_{\theta,b}\quad \theta_1+b_1^\top c
+\]
+subject to
+\[
+\begin{gathered}
+\theta_t-\theta_{t+1}+(b_t-b_{t+1})^\top r
+\ge \sum_jp_{tj}(f_j-b_{t+1}^\top A_j)u_j\\
+\forall t=1,\ldots,T,\quad r\in\R_t,\quad u\in\U(r).
+\end{gathered}
+\]
+Theorem 2 permits a nonnegative monotone optimal selection only under its stated positive-capacity and positive-arrival assumptions.
+\src{Adelman (2007), p. 652, eqs. (14), (16)--(17); Theorem 2, pp. 654--655.}
+\end{frame}
+
+\begin{frame}[t]{A6. Affine dual and the bound proof}
+\footnotesize
+For (P1), $X_t(r,u)\ge0$ maximizes $\sum_{t,r,u}q_t(r,u)X_t(r,u)$ subject to
+\[
+\sum_{r,u}X_t(r,u)=1\quad\forall t,
+\]
+\[
+\sum_{r,u}r_iX_1(r,u)=c_i,
+\quad
+\sum_{r,u}r_iX_t(r,u)=\sum_{s,u}\left(s_i-\sum_jp_{t-1,j}a_{ij}u_j\right)X_{t-1}(s,u)
+\quad\forall i,t>1.
+\]
+These are moments, not statewise flows. Set $Y_j=\sum_{t,r,u}p_{tj}u_jX_t(r,u)$.
+Mass gives $Y_j\le d_j$. Telescoping resource moments gives
+\[
+c_i=\sum_{t<T,r,u,j}p_{tj}a_{ij}u_jX_t(r,u)
++\sum_{r,u}r_iX_T(r,u)\ge\sum_ja_{ij}Y_j,
+\]
+since $r_i\ge\sum_jp_{Tj}a_{ij}u_j$. Therefore every P1 objective is fluid feasible. D1 feasibility separately gives $z^{P1}\ge v_1(c)$.
+\src{Adelman (2007), pp. 652--653, eqs. (18)--(24), Theorem 1.}
+\end{frame}
+
+\begin{frame}[t]{A7. Monotone prices: scope of Theorem 2}
+\small
+Under $c_i>0$ and $p_{tj}>0$ for every $i,t,j$, an optimal D1 solution exists with
+\[b_{t,i}\ge b_{t+1,i}\ge0,\qquad \theta_t\ge\theta_{t+1}\ge0.\]
+The proof uses the first period in which a resource appears in positive P1 support, complementary slackness, and changes to the dual prices that preserve feasibility and optimality.
+\medskip\par
+\textbf{Why ``exists'' matters:} Example 1 also admits $\theta_2=0$, $b_2=0.5$, $\theta_1=0.75$, $b_1=0$. Its D1 objective is $0.75$, but $b_1<b_2$. Zero-demand or zero-capacity tests lie outside the theorem's stated assumptions.
+\src{Adelman (2007), pp. 653--655, eqs. (25)--(29), Theorem 2 and Corollary 1; counterexample derived.}
+\end{frame}
+
+\begin{frame}[t]{A8. Pricing, reduced costs, and stopping}
+\footnotesize
+For fixed $t>1$, define $w_j=p_{tj}(f_j-b_{t+1}^\top A_j)$ and $d_i=b_{t,i}-b_{t+1,i}$. Adelman's pricing problem is
+\[
+\max_{r,u}\ \sum_jw_ju_j-\sum_id_ir_i-\theta_t+\theta_{t+1}
+\quad\text{s.t. }a_{ij}u_j\le r_i,\quad u_j\in\{0,1\},\quad 0\le r_i\le c_i.
+\]
+The paper uses an integer program and generates a batch of improving columns. With global period maxima $\rho_t^*$, Proposition 3 yields $z^{P1}\le Z_\Lambda+\sum_t\rho_t^*$; if $Z_\Lambda>0$, $\sum_t\rho_t^*/Z_\Lambda\le\varepsilon$ is a sufficient relative stopping rule.
+\medskip\par
+\textbf{Complexity caveat:} A derived minimum-cut reduction for this exact pricing structure is being proof-checked. The paper itself does not claim NP-hardness or polynomial complexity.
+\src{Adelman (2007), pp. 650--651, Proposition 3, and pp. 655--657, eqs. (33)--(36), Figure 2.}
+\end{frame}
+
+\begin{frame}[t]{A9. Proposed experiment matrix}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{0.18\textwidth}p{0.25\textwidth}X@{}}
+\toprule
+Block & Variation & Evidence to record\\
+\midrule
+Verification & Example 1; two-resource network; edge cases & DP, exact LP and dual, fluid, full affine LP; values and residuals\\
+Bound strength & Size, load, timing, fare & Exact $V^*$ when feasible; fluid and certified affine bounds\\
+Policy value & Fixed and re-solved policies & Tiny-case exact value; policy and paired-difference 95\% intervals\\
+Computation & Enumeration vs.\ columns & Runtime, memory, iterations, generated columns, pricing gaps\\
+Truncation & Columns, states, horizon & Time saved, omitted constraints, surviving certificates\\
+\bottomrule
+\end{tabularx}
+\medskip\par
+Factor levels, pilot size, final replication precision, seeds, and published replication target require approval before Phase 4 runs.
+\src{Proposed design, aligned with \texttt{EXPERIMENT\_SPEC.md}; no project experimental results.}
+\end{frame}
+
+\end{document}

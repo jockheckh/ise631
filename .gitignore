@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.egg-info/
+.coverage
+.env
+*.lic
+.gurobi/
+sources/adelman/*.pdf
+sources/adelman/*.zip
+results/**
+!results/.gitkeep
+reports/figures/**
+!reports/figures/.gitkeep
+reports/tables/**
+!reports/tables/.gitkeep

@@ -1,0 +1,4 @@
+claim_id,claim_text,source_type,source_location,proof_or_test,evidence_path,independent_review,status
+C01,Affine approximate LP dominates deterministic fluid bound (under stated assumptions),instructor_question,10_MDPs (1).pdf p2,derive and test tiny cases,,,unverified
+C02,Policy performance and bound gaps can be assessed on synthetic instances,instructor_requirement,10_MDPs (1).pdf p2,model build plus Monte Carlo and exact DP,,,unverified
+C03,Column generation or equivalent separation enables handling implicit ALP constraints,instructor_description,10_MDPs (1).pdf p1,validate algorithm in paper and analyze runtime,,,unverified
