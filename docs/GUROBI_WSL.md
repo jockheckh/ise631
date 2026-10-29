@@ -1,4 +1,9 @@
-# Gurobi on Linux/WSL — field setup
+# Legacy Gurobi on Linux/WSL setup (not the selected runtime)
+
+The project now uses Windows Python through PowerShell. This page is retained
+only as historical setup guidance; follow `AGENTS.md` and the Windows
+preflight result for project execution. Do not use WSL for experiments unless
+the human explicitly changes the runtime decision.
 
 **Important:** having Gurobi installed or licensed on Windows does not establish that `gurobipy` and its license work from WSL. Test from the very Python interpreter used by Codex.
 

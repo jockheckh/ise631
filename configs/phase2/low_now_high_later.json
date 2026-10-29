@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "classification": "synthetic_verification",
+  "source_reference": "Hand-constructed timing and opportunity-cost test; not a published Adelman instance",
+  "seed": null,
+  "max_states": 100,
+  "max_state_action_pairs": 1000,
+  "assertion_tolerance": 1e-7,
+  "instance": {
+    "T": 2,
+    "m": 1,
+    "n": 2,
+    "c": [1],
+    "A": [[1, 1]],
+    "f": [1.0, 3.0],
+    "p": [[0.4, 0.0], [0.0, 0.4]],
+    "name": "low_now_high_later",
+    "provenance": "Hand-constructed synthetic verification; exact DP 1.2, fluid 1.6, static policy 1.12"
+  }
+}

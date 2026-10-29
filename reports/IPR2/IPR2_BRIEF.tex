@@ -7,31 +7,143 @@
 \definecolor{navy}{RGB}{22,48,75}
 \definecolor{teal}{RGB}{0,111,112}
 \definecolor{muted}{RGB}{90,102,111}
+\definecolor{statusred}{RGB}{166,37,43}
+\definecolor{statusyellow}{RGB}{255,231,105}
+\definecolor{statusamber}{RGB}{238,174,54}
+\definecolor{statusgreen}{RGB}{31,122,75}
 \setbeamercolor{structure}{fg=teal}
 \setbeamercolor{frametitle}{fg=navy}
 \setbeamercolor{title}{fg=navy}
 \setbeamercolor{footline}{fg=muted}
 \setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{headline}{\leavevmode\hbox to \paperwidth{\hfill{\tiny\color{muted}ISE 631 \quad Adelman research}\hspace{1.5em}}\vskip2pt}
+\setbeamertemplate{footline}{\leavevmode\hbox to \paperwidth{\hspace{1.5em}{\tiny\color{muted}Adelman Project IPR 2}\hfill{\tiny\color{muted}Herbert Jockheck}\hfill{\tiny\color{muted}\insertframenumber/\inserttotalframenumber}\hspace{1.5em}}\vskip4pt}
 \setbeamertemplate{itemize items}[circle]
 \setlength{\tabcolsep}{4pt}
 \newcommand{\src}[1]{\par\vfill{\tiny\color{muted}Source: #1\par}}
+\newcommand{\notation}[1]{\par\vspace{0.4em}{\tiny\color{muted}\textbf{Variables:} #1\par}}
+\newcommand{\decision}[1]{\par\vspace{0.5em}{\color{teal}\(\bigstar\)\ \textbf{Decision:} #1\par}}
+\newcommand{\blocked}{\colorbox{statusred}{\strut\color{white}Blocked}}
+\newcommand{\draft}{\colorbox{statusyellow}{\strut\color{black}Draft}}
+\newcommand{\notstarted}{\colorbox{statusamber}{\strut\color{black}Not started}}
+\newcommand{\complete}{\colorbox{statusgreen}{\strut\color{white}Complete}}
 \newcommand{\status}[1]{{\color{teal}\textbf{#1}}}
 \newcommand{\R}{\mathcal R}
 \newcommand{\U}{\mathcal U}
 \newcommand{\E}{\mathbb E}
 \title{Dynamic Bid Prices in Revenue Management}
-\subtitle{ISE 631 IPR 2: theory, verification plan, and experimental design}
+\subtitle{ISE 631 IPR 2 decision brief: theory and evidence plan}
 \author{Herbert Jockheck}
 \date{Fall 2026}
 
 \begin{document}
 
-% Main slide 1 of 10
+% Main slide 1
+\begin{frame}[t]{IPR 2 Decision Brief}
+\small
+\begin{beamercolorbox}[sep=0.7em,center,wd=\textwidth]{block body}
+\textbf{Purpose:} Confirm the Adelman mathematics, course-requirement coverage, and evidence plan for the final presentation.
+\end{beamercolorbox}
+\vspace{0.8em}
+\begin{columns}[T,onlytextwidth]
+\column{0.31\textwidth}
+\textbf{Decisions requested}\par
+\begin{itemize}\setlength{\itemsep}{0.5em}
+\item \textbf{Slide 8:} Proof and LP depth?
+\item \textbf{Slide 10:} IPR 3 computation scope?
+\item \textbf{Slide 11:} Published replication target?
+\item \textbf{Slide 13:} Conceptual application scope?
+\end{itemize}
+\column{0.32\textwidth}
+\textbf{Agenda today}\par
+\begin{itemize}\setlength{\itemsep}{0.5em}
+\item Progress and requirement crosswalk
+\item Exact, fluid, and affine models
+\item Bound proof and column generation
+\item Verification and experiment design
+\item Final-brief scope and risks
+\end{itemize}
+\column{0.32\textwidth}
+\textbf{Successful end state}\par
+\begin{itemize}\setlength{\itemsep}{0.5em}
+\item Theory coverage agreed
+\item Numerical gates defined
+\item IPR 3 comparisons approved
+\item Final narrative ordered
+\item Extension limits recorded
+\end{itemize}
+\end{columns}
+\src{Structure follows the IPR 1 decision brief, p. 1. Status and requests are project-specific.}
+\end{frame}
+
+% Main slide 2
+\begin{frame}[t]{Final-presentation crosswalk and current status}
+\scriptsize
+\begin{tabularx}{\textwidth}{@{}p{0.21\textwidth}p{0.31\textwidth}p{0.16\textwidth}X@{}}
+\toprule
+Section & Deliverable & Status & Next action\\
+\midrule
+1. Intro (I14) & Pricing motivation and approved RQs & \draft & Verify history and prevalence\\ \hline
+2. RM (I01--I03) & Discounted LP, exact MDP, fluid LP & \draft & Audit signs and example\\ \hline
+3. Method (I04--I06, I09) & Affine ALP, duality, decision rule & \draft & Complete formal audit\\ \hline
+4. Proof (I07, I10) & Bound hierarchy and theorem & \draft & File independent proof audit\\ \hline
+5. Scale (I11) & Pricing and column generation & \draft & Verify complexity and separation\\ \hline
+6. Design (I08, I12) & Benchmarks, metrics, policies & \draft & Approve factors and baselines\\ \hline
+6. Results (I08, I12) & Code, tables, chart, sensitivity & \notstarted & Pass preflight and tests\\ \hline
+7. Critique (I13) & Assumptions and alternatives & \draft & Link claims to evidence\\ \hline
+8. Literature (I14) & Pricing lineage and FTC context & \notstarted & Verify works and primary source\\ \hline
+8. Extension (I14) & Synthetic pricing application & \blocked & Await course and human gate\\ \hline
+9. Conclusion & Three supported takeaways & \draft & Update after results\\
+\bottomrule
+\end{tabularx}
+\vspace{0.7em}\par
+\textbf{Key:}\quad Red \blocked\qquad Yellow \draft\qquad Amber \notstarted\qquad Green \complete
+\src{User's final outline and project phase plan. Status describes presentation progress; formal requirements I01--I14 remain unverified in the project register.}
+\end{frame}
+
+% Main slide 3
+\begin{frame}[t]{Roadmap from IPR 1 to the final presentation}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{0.22\textwidth}p{0.25\textwidth}p{0.25\textwidth}X@{}}
+\toprule
+IPR 1: scope & IPR 2: theory & IPR 3: evidence & Final: synthesis\\
+\midrule
+\(\bullet\) Six approved questions\newline
+\(\bullet\) LP themes\newline
+\(\bullet\) Verification plan\newline
+\(\bullet\) Application guardrails
+&
+\(\bullet\) Exact and discounted LPs\newline
+\(\bullet\) Fluid and affine models\newline
+\(\bullet\) Bound proof\newline
+\(\bullet\) Pricing formulation\newline
+\(\bullet\) Experiment approval
+&
+\(\bullet\) Independent oracle\newline
+\(\bullet\) Certified bounds\newline
+\(\bullet\) Static/dynamic policies\newline
+\(\bullet\) Scaling and truncation\newline
+\(\bullet\) Reviewed results
+&
+\(\bullet\) Motivation\newline
+\(\bullet\) Adelman result\newline
+\(\bullet\) Measured comparisons\newline
+\(\bullet\) Critique\newline
+\(\bullet\) Gated application\newline
+\(\bullet\) Limits
+\\
+\bottomrule
+\end{tabularx}
+\vspace{0.9em}
+\textbf{Current gate:} Theory drafted. Formal audit, Windows solver preflight, code, and numerical results pending.
+\medskip\par
+\textbf{Final brief rule:} every numerical chart must trace to a reviewed result. The optional application cannot displace instructor-required theory or computation.
+\src{Roadmap structure follows IPR 1 brief, p. 6; milestones follow the project phase plan.}
+\end{frame}
+
+% Main slide 4
 \begin{frame}[t]{Research scope and current progress}
 \small
-\textcolor{teal}{\textbf{Dynamic Bid Prices in Revenue Management, ISE 631 IPR 2}}\par
-\vspace{0.45em}
 \textbf{Question groups}
 \begin{tabularx}{\textwidth}{@{}p{0.20\textwidth}X@{}}
 \toprule
@@ -46,7 +158,7 @@ Application (RQ6) & Does the resource-allocation model transfer to surveillance 
 \textbf{Implementations and tests} & Exact DP, LPs, policies, and assertions pending.\\
 \textbf{Experiments and replication} & Design proposed; no project run or published-table reproduction.\\
 \end{tabularx}
-\src{Approved questions: \texttt{RESEARCH\_QUESTIONS.md}; phase gates: \texttt{PLANS.md}.}
+\src{Six approved research questions and the project phase plan.}
 \end{frame}
 
 % Main slide 2 of 10
@@ -60,8 +172,32 @@ Action & $u_j\in\{0,1\}$ says whether class $j$ would be accepted; $a_{ij}u_j\le
 Reward and next state & An accepted class $j$ earns $f_j$ and moves to $r-A_j$; otherwise capacity stays at $r$.\\
 \bottomrule
 \end{tabularx}
-\vspace{0.9em}
-\textbf{Decision principle:} accept revenue now only when it covers the future value of the capacity consumed.
+\vspace{0.65em}
+\begin{columns}[T,onlytextwidth]
+\column{0.48\textwidth}
+\textbf{One-period MDP sketch}\par
+\scriptsize
+\[
+\begin{array}{c}
+\text{state }(t,r)\\[-0.1em]
+\downarrow\ \text{class }j\text{ arrives with }p_{tj}\\[0.2em]
+\begin{cases}
+\text{accept: }(f_j,t+1,r-A_j),\\
+\text{reject: }(0,t+1,r).
+\end{cases}
+\end{array}
+\]
+\column{0.48\textwidth}
+\textbf{Adelman's acceptance rule}\par
+\scriptsize
+\[
+u^*_{tj}(r)=1\quad\Longleftrightarrow\quad
+r\ge A_j,\quad
+f_j-\bigl[v_{t+1}(r)-v_{t+1}(r-A_j)\bigr]\ge0.
+\]
+Revenue today must cover the next-period value of capacity used.
+\end{columns}
+\notation{$t=1,\ldots,T$ period; $i=1,\ldots,m$ resource; $j=1,\ldots,n$ class; $c_i$ initial and $r_i$ remaining capacity; $a_{ij}$ units used; $A_j=(a_{ij})_i$; $p_{tj}$ arrival probability; $u_j$ accept indicator; $f_j$ fare; $v_t(r)$ optimal future reward.}
 \src{Adelman (2007), pp. 648--649, \S2.1 and eqs. (1)--(2).}
 \end{frame}
 
@@ -91,6 +227,7 @@ for every $t,r,u\in\U(r)$.
 \medskip\par
 Its exact dual conserves probability at every time-state pair. Complementary slackness identifies optimal actions on occupied states.
 \end{columns}
+\notation{$t$ period; $T$ horizon; $r$ remaining capacity; $c$ initial capacity; $A_j$ class-$j$ resource use; $p_{tj}$ arrival probability; $f_j$ fare; $v_t(r)$ optimal value; $\Delta$ opportunity cost; $[x]_+=\max(0,x)$; $u$ feasible action in $\U(r)$; $q_t$ expected reward; $R_{t+1}$ next state; $\E$ expectation.}
 \src{Adelman (2007), p. 649, eqs. (1)--(3); occupancy dual independently derived in backup slide A2.}
 \end{frame}
 
@@ -122,6 +259,7 @@ The policy accepts a feasible class $j$ if $f_j\ge b_{t+1}^\top A_j$.
 \end{columns}
 \medskip\par
 Within one affine solve, bid prices vary by period. Re-solving can update the trajectory after capacity changes.
+\notation{$Y_j$ expected acceptances; $A=(a_{ij})$ resource-use matrix; $c$ initial capacity; $f_j$ fare; $p_{tj}$ arrival probability; $\lambda_i$ fluid resource dual; $\hat v_t$ affine value; $\theta_t$ intercept; $b_t$ resource-price vector; $r$ remaining capacity; $u_j$ accept indicator; $t$ period.}
 \src{Adelman (2007), p. 650, eqs. (4)--(6), and p. 652, eqs. (14)--(17).}
 \end{frame}
 
@@ -137,6 +275,8 @@ Within one affine solve, bid prices vary by period. Re-solving can update the tr
 \end{enumerate}
 \medskip\par
 \textbf{Structural result:} under $c_i>0$ and $p_{tj}>0$, a monotone optimal trajectory $b_{t,i}\ge b_{t+1,i}$ exists. An arbitrary optimal solver output need not be monotone.
+\decision{Is this theorem and proof depth sufficient for the final brief?}
+\notation{$z^{LP}$ fluid upper bound; $z^{P1}$ affine-LP upper bound; $v_1(c)$ exact initial MDP value; $X_{t,r,u}$ P1 state-action weight; $Y_j$ expected class-$j$ acceptance; $p_{tj}$ arrival probability; $u_j$ accept indicator; $A$ resource-use matrix; $b_{t,i}$ resource-$i$ slope; $c_i$ initial capacity.}
 \src{Adelman (2007), pp. 652--655, Theorems 1--2 and eqs. (22)--(29).}
 \end{frame}
 
@@ -157,13 +297,14 @@ Fluid LP & 1.00 & Hand calculation; published example\\
 \end{tabular}
 \end{center}
 \textbf{Verification gate:} independently compare exact DP, exact LP primal/dual, fluid LP, and full affine LP on this case and a two-resource network. Test zero demand, zero capacity, terminal decisions, and infeasible arrivals.
+\notation{$T$ horizon; $f$ fare; $a$ resource use; $p_t$ arrival probability; $v_t(r)$ exact value at period $t$ with remaining capacity $r$; P1 affine approximation; fluid LP deterministic relaxation.}
 \src{Adelman (2007), p. 653, Example 1. Project-generated solver results are pending.}
 \end{frame}
 
 % Main slide 7 of 10
 \begin{frame}[t]{Column generation and its certificate}
 \small
-\textbf{Master:} start (P1) with the feasible no-acceptance columns. Solve the restricted master and obtain $\theta_t,b_t$.
+\textbf{Primary:} start (P1) with feasible no-acceptance columns. Solve the restricted primary and obtain $\theta_t,b_t$.
 \medskip\par
 \textbf{Pricing:} for each period maximize reduced profit over feasible $(r,u)$:
 \[
@@ -172,14 +313,14 @@ Fluid LP & 1.00 & Hand calculation; published example\\
 \]
 Add a column when its reduced profit is positive, then re-solve. Adelman formulates the period problem as an integer program.
 \medskip\par
-\textbf{Hand pricing check:} in Example 1, zero initial dual values give reduced profit $0.5$ for the period-2 accept column. Adding it raises the restricted objective from $0$ to $0.5$.
-\medskip\par
 \textbf{Stopping certificate (Proposition 3):}
 \[
 Z_{\Lambda}\le z^{P1}\le Z_{\Lambda}+\sum_{t=1}^{T}\rho_t^*,
 \quad \rho_t^*=\max_{r,u}\rho_t(r,u).
 \]
 $Z_{\Lambda}$ alone does not certify an upper bound on the exact MDP.
+\decision{How much of the pricing and column-generation algorithm must IPR 3 implement?}
+\notation{$t,T$ period/horizon; $(r,u)$ state/action; $p_{tj},f_j,A_j$ arrival probability, fare, resource use; $b_t,\theta_t$ slopes/intercept; $\rho_t,\rho_t^*$ reduced profit/period maximum; $Z_\Lambda,z^{P1}$ restricted/full primary objectives.}
 \src{Adelman (2007), pp. 650--651, Proposition 3; pp. 655--657, \S4.4 and eqs. (33)--(36).}
 \end{frame}
 
@@ -189,34 +330,56 @@ $Z_{\Lambda}$ alone does not certify an upper bound on the exact MDP.
 \begin{tabularx}{\textwidth}{@{}p{0.21\textwidth}X@{}}
 \toprule
 Factors & Resources, horizon, load, fare spread, arrival timing, and single- versus multi-resource products. Start with exactly enumerable cases.\\
-Comparators & Exact DP where tractable; fluid and certified affine bounds; fixed static and dynamic policies; separately labeled re-solving variants.\\
+Comparators & Exact DP where tractable; fluid and certified affine bounds; fixed static and dynamic policies; separately labeled re-solving variants; proposed first-come feasible baseline.\\
 Outcomes & Bound gaps, exact or estimated policy reward, paired dynamic-minus-static difference, runtime, memory, iterations, and generated columns.\\
 Inference & Common arrival paths and predeclared seeds; report 95\% intervals for each policy mean and for paired differences. Use absolute gaps when exact value is zero.\\
 \bottomrule
 \end{tabularx}
 \medskip\par
 \textbf{Truncation study:} record which state, column, or horizon restriction is used and whether a valid pricing certificate survives.
+\decision{Which published result and comparison protocol should IPR 3 target?}
 \src{Proposed design; no project experiment has run. Adelman (2007), pp. 657--660, supplies comparison context.}
 \end{frame}
 
-% Main slide 9 of 10
-\begin{frame}[t]{Surveillance resource allocation as a possible application}
+% Critical appraisal before the optional application
+\begin{frame}[t]{Critical appraisal for the final presentation}
 \small
-\begin{tabularx}{\textwidth}{@{}p{0.40\textwidth}X@{}}
+\begin{tabularx}{\textwidth}{@{}p{0.28\textwidth}X@{}}
 \toprule
-Revenue management & Candidate mission-allocation analogue\\
+Model assumption & Question to test or disclose\\
 \midrule
-Finite resource capacity & Aircraft, sensor, or operator availability\\
-Customer class and arrival & Mission type and uncertain request arrival\\
-Fare and resource use & Assigned mission value and asset consumption\\
-Bid price & Opportunity cost of committing a scarce asset\\
+Known exogenous arrivals & How sensitive are policies to misspecified probabilities?\\
+Nonreplenishing capacity & Does the intended application have reusable assets?\\
+Affine value function & How much state dependence is lost within one solve?\\
+Algorithm and scaling & Which claims are proved, certified, or only observed on test instances?\\
+Published policy comparison & How much gain comes from time prices, lookahead, or re-solving?\\
 \bottomrule
 \end{tabularx}
 \medskip\par
-\textbf{Model checks:} Does capacity remain unavailable after use? Can several requests arrive together? Is utility additive and defensible? If these fail, the original MDP needs structural changes.
+\textbf{Final evidence rule:} compare bounds with exact values where possible; compare policies using exact evaluation or paired simulation. Label published results separately from project measurements.
+\src{Reviewer-style questions derived from Adelman (2007), \S\S2--5; empirical answers remain pending.}
+\end{frame}
+
+% Optional application
+\begin{frame}[t]{Adelman and individualized pricing: a research lineage}
+\small
+\textbf{Distinct mechanisms}\par
+Adelman (2007) estimates an \emph{internal capacity opportunity cost}. Personalized pricing also models how an individual responds to an offered price.
+\medskip
+\begin{tabularx}{\textwidth}{@{}p{0.25\textwidth}X@{}}
+\toprule
+Research thread & Candidate references supplied for verification\\
+\midrule
+Customer choice and related methods & Zhang and Adelman (2009); Barz et al. (2023); Hausenblas et al. (2025)\\
+Individualized pricing & Jahandideh et al. (2020); Lei et al. (2023/2025)\\
+Parallel personalization line & Acquisti and Varian (2005); Aydin and Ziya (2009); Ban and Keskin (2021)\\
+Policy context & FTC inquiry (January 2025): consumer data in individualized pricing\\
+\bottomrule
+\end{tabularx}
 \medskip\par
-\status{IPR 2 scope: conceptual mapping only.} Numerical application remains outside the current project gate.
-\src{Application hypothesis, not a result from Adelman (2007); project gate in \texttt{PLANS.md}.}
+\textbf{Evidence boundary:} these are reading leads, not yet source-checked for this project. A citation trail does not establish that Adelman created surveillance-pricing systems.
+\decision{Is a conceptual, source-checked connection sufficient for the final brief?}
+\src{Adelman (2007), pp. 647--648; subsequent works and FTC item supplied by the researcher, pending source verification.}
 \end{frame}
 
 % Main slide 10 of 10
@@ -225,13 +388,13 @@ Bid price & Opportunity cost of committing a scarce asset\\
 \begin{tabularx}{\textwidth}{@{}p{0.23\textwidth}X@{}}
 \toprule
 Next evidence gate & Source-linked proof notes; exact DP and LP agreement; fluid/static tests; full small affine LP; pricing versus exhaustive search; paired policy comparisons.\\
-Professor decision 1 & Is planned numerical verification sufficient for IPR 2, given that project solver evidence is not yet available?\\
-Professor decision 2 & What ALP and column-generation implementation depth is expected by IPR 3?\\
-Professor decision 3 & What level of published-table replication is expected, and which experiment factors should be fixed?\\
-Scope confirmation & Keep the surveillance discussion conceptual until mandatory evidence and separate approval are complete.\\
+\textcolor{teal}{\(\bigstar\) Proof (8)} & Is the theorem and LP treatment sufficient for the final brief?\\
+\textcolor{teal}{\(\bigstar\) Algorithm (10)} & How much pricing and column generation must IPR 3 implement?\\
+\textcolor{teal}{\(\bigstar\) Evidence (11)} & Which published result and comparison protocol should IPR 3 target?\\
+\textcolor{teal}{\(\bigstar\) Application (13)} & Is a conceptual, source-checked connection sufficient?\\
 \bottomrule
 \end{tabularx}
-\src{Course prompt, p. 2; project phase sequence in \texttt{PLANS.md}.}
+\src{ISE 631 course prompt, p. 2; project phase plan.}
 \end{frame}
 
 \appendix
@@ -249,6 +412,7 @@ Overlapping next states add their probabilities. With $v_{T+1}\equiv0$,
 v_t(r)=\max_{u\in\U(r)}\left\{q_t(r,u)+\sum_{r'}P_t(r'\mid r,u)v_{t+1}(r')\right\}.
 \]
 Initial state is $c$ in period 1. No discount factor applies to this finite-horizon model.
+\notation{$t,T$ period and horizon; $r,r'$ current and next resource vectors; $c$ initial vector; $i,j,n$ resource, class, class count; $a_{ij},A_j$ class resource use; $u_j,\U(r)$ accept indicator and feasible actions; $p_{tj},p_{t0}$ arrival/no-arrival probabilities; $f_j$ fare; $q_t$ expected reward; $P_t$ transition; $v_t$ optimal value; $\mathbf1$ indicator.}
 \src{Adelman (2007), pp. 648--649, eq. (1); transition notation derived.}
 \end{frame}
 
@@ -268,6 +432,7 @@ subject to
 \quad\forall t=2,\ldots,T,\ r\in\R_t.
 \]
 Strong duality gives the exact initial value. Positive $x_t(r,u)$ makes its Bellman inequality tight.
+\notation{$t,T$ period/horizon; $r,s$ states in $\R_t$; $u\in\U(r)$ feasible action; $c$ initial state; $q_t$ expected reward; $P_t$ transition probability; $v_t$ free value variable; $x_t$ nonnegative state-action occupancy; $v_{T+1}=0$ terminal value.}
 \src{Adelman (2007), p. 649, eq. (3); dual independently derived, not labeled P0 in the paper.}
 \end{frame}
 
@@ -287,6 +452,7 @@ The occupancy dual maximizes $\sum_{s,a}r(s,a)x(s,a)$ over $x\ge0$ with
 \quad\forall s.
 \]
 $x$ counts $\nu$-weighted discounted visits. Complementary slackness identifies optimal actions on occupied states. With $\nu(s)>0$ for all $s$, the minimizing value vector is $V^*$ everywhere.
+\notation{$S$ state set; $A(s)$ feasible actions; $s,s'$ states; $a$ action; $\gamma$ discount; $\nu$ initial state weights; $V,V^*$ candidate/optimal values; $P$ transition probability; $r(s,a)$ reward; $x(s,a)$ discounted occupancy.}
 \src{ISE 631 instructor prompt, p. 1; dual and full-support qualification derived.}
 \end{frame}
 
@@ -303,6 +469,7 @@ Its dual is
 \quad\text{s.t. } A_j^\top\lambda+\mu_j\ge f_j\ \forall j.
 \]
 Capacity shadow price $\lambda_i$ is nonnegative. Complementary slackness characterizes primal-dual optima; an online rule accepting when $f_j\ge A_j^\top\lambda$ is a policy constructed from these prices, with separate performance to be evaluated.
+\notation{$t$ period; $j$ class; $d_j=\sum_t p_{tj}$ expected demand; $Y_j$ expected acceptances; $f_j$ fare; $A=(a_{ij})$ resource use; $c$ initial capacity; $\lambda_i$ resource dual; $\mu_j$ demand-cap dual.}
 \src{Adelman (2007), p. 650, eqs. (4)--(6) and displayed dual.}
 \end{frame}
 
@@ -323,6 +490,7 @@ subject to
 \end{gathered}
 \]
 Theorem 2 permits a nonnegative monotone optimal selection only under its stated positive-capacity and positive-arrival assumptions.
+\notation{$t=1,\ldots,T$ period; $r\in\R_t$ remaining state; $c$ initial capacity; $u\in\U(r)$ feasible acceptance vector; $\theta_t$ free intercept; $b_t$ free resource slopes; $p_{tj}$ arrival probability; $f_j$ fare; $A_j$ class-$j$ resource use.}
 \src{Adelman (2007), p. 652, eqs. (14), (16)--(17); Theorem 2, pp. 654--655.}
 \end{frame}
 
@@ -345,6 +513,7 @@ c_i=\sum_{t<T,r,u,j}p_{tj}a_{ij}u_jX_t(r,u)
 +\sum_{r,u}r_iX_T(r,u)\ge\sum_ja_{ij}Y_j,
 \]
 since $r_i\ge\sum_jp_{Tj}a_{ij}u_j$. Therefore every P1 objective is fluid feasible. D1 feasibility separately gives $z^{P1}\ge v_1(c)$.
+\notation{$t,T$ period/horizon; $i,j$ resource/class; $r,s$ remaining states; $u_j$ accept indicator; $X_t(r,u)$ P1 weight; $q_t$ expected reward; $p_{tj}$ arrival probability; $a_{ij}$ resource use; $c_i$ initial capacity; $Y_j,d_j$ expected acceptances/arrivals; $z^{P1},v_1(c)$ affine bound/exact value.}
 \src{Adelman (2007), pp. 652--653, eqs. (18)--(24), Theorem 1.}
 \end{frame}
 
@@ -355,6 +524,7 @@ Under $c_i>0$ and $p_{tj}>0$ for every $i,t,j$, an optimal D1 solution exists wi
 The proof uses the first period in which a resource appears in positive P1 support, complementary slackness, and changes to the dual prices that preserve feasibility and optimality.
 \medskip\par
 \textbf{Why ``exists'' matters:} Example 1 also admits $\theta_2=0$, $b_2=0.5$, $\theta_1=0.75$, $b_1=0$. Its D1 objective is $0.75$, but $b_1<b_2$. Zero-demand or zero-capacity tests lie outside the theorem's stated assumptions.
+\notation{$t$ period; $i$ resource; $j$ class; $c_i$ initial capacity; $p_{tj}$ arrival probability; $b_{t,i}$ affine resource price; $\theta_t$ affine intercept; D1/P1 are the affine primal-dual pair.}
 \src{Adelman (2007), pp. 653--655, eqs. (25)--(29), Theorem 2 and Corollary 1; counterexample derived.}
 \end{frame}
 
@@ -368,6 +538,7 @@ For fixed $t>1$, define $w_j=p_{tj}(f_j-b_{t+1}^\top A_j)$ and $d_i=b_{t,i}-b_{t
 The paper uses an integer program and generates a batch of improving columns. With global period maxima $\rho_t^*$, Proposition 3 yields $z^{P1}\le Z_\Lambda+\sum_t\rho_t^*$; if $Z_\Lambda>0$, $\sum_t\rho_t^*/Z_\Lambda\le\varepsilon$ is a sufficient relative stopping rule.
 \medskip\par
 \textbf{Complexity caveat:} A derived minimum-cut reduction for this exact pricing structure is being proof-checked. The paper itself does not claim NP-hardness or polynomial complexity.
+\notation{$t,T$ period/horizon; $i,j$ resource/class; $w_j$ net expected class profit; $d_i$ price change; $r_i,c_i$ remaining/initial capacity; $a_{ij}$ resource use; $u_j$ accept indicator; $\theta_t,b_t$ intercept/slopes; $\rho_t^*$ max reduced profit; $Z_\Lambda$ restricted-primary value; $z^{P1}$ full value; $\varepsilon$ tolerance.}
 \src{Adelman (2007), pp. 650--651, Proposition 3, and pp. 655--657, eqs. (33)--(36), Figure 2.}
 \end{frame}
 
@@ -377,7 +548,7 @@ The paper uses an integer program and generates a batch of improving columns. Wi
 \toprule
 Block & Variation & Evidence to record\\
 \midrule
-Verification & Example 1; two-resource network; edge cases & DP, exact LP and dual, fluid, full affine LP; values and residuals\\
+Verification & Example 1; 2-resource case; edge cases & DP, exact LP and dual, fluid, full affine LP; values and residuals\\
 Bound strength & Size, load, timing, fare & Exact $V^*$ when feasible; fluid and certified affine bounds\\
 Policy value & Fixed and re-solved policies & Tiny-case exact value; policy and paired-difference 95\% intervals\\
 Computation & Enumeration vs.\ columns & Runtime, memory, iterations, generated columns, pricing gaps\\
@@ -386,7 +557,47 @@ Truncation & Columns, states, horizon & Time saved, omitted constraints, survivi
 \end{tabularx}
 \medskip\par
 Factor levels, pilot size, final replication precision, seeds, and published replication target require approval before Phase 4 runs.
-\src{Proposed design, aligned with \texttt{EXPERIMENT\_SPEC.md}; no project experimental results.}
+\src{Project experiment design proposal; no project experimental results.}
+\end{frame}
+
+\begin{frame}[t]{A10. Instructor requirements I01--I07}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{0.08\textwidth}p{0.15\textwidth}p{0.16\textwidth}X@{}}
+\toprule
+ID & Final part & Register & Evidence needed next\\
+\midrule
+I01 & 2--4 & Planned & Discounted Bellman LP, occupancy dual, complementary slackness audit\\
+I02 & 2 & Planned & Exact network MDP and state-growth analysis\\
+I03 & 2--3 & Planned & Fluid primal/dual and static-policy validation\\
+I04 & 3--5 & Planned & Source-matched affine ALP and algorithm audit\\
+I05 & 3 & Planned & Paper method and solution approach, source-linked\\
+I06 & 3--5 & Planned & Correct LP course-concept mapping\\
+I07 & 4 & Planned & Principal theorem and independently reviewed proof\\
+\bottomrule
+\end{tabularx}
+\medskip\par
+Draft formulas in this brief are presentation material. The register remains planned until evidence paths and a separate reviewer are recorded.
+\src{\texttt{requirements.csv}, I01--I07; instructor prompt, pp. 1--2.}
+\end{frame}
+
+\begin{frame}[t]{A11. Instructor requirements I08--I14}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{0.08\textwidth}p{0.15\textwidth}p{0.16\textwidth}X@{}}
+\toprule
+ID & Final part & Register & Evidence needed next\\
+\midrule
+I08 & 6 & Planned & Reproducible fluid, static, and dynamic policy tests\\
+I09 & 3--4 & Planned & Approximation benefit with verified example\\
+I10 & 4 & Planned & Full bound-dominance derivation and audit\\
+I11 & 5 & Planned & Pricing formulation and qualified complexity account\\
+I12 & 6 & Planned & Policy, exact MDP, and fluid gap results\\
+I13 & 7 & Planned & Evidence-based critique and alternatives\\
+I14 & 1, 5, 8 & Planned & Approved independent RQs linked to final analysis\\
+\bottomrule
+\end{tabularx}
+\medskip\par
+I14 has approved questions on file, but its requirement register is not reviewed. I08 and I12 have no project numerical results yet.
+\src{\texttt{requirements.csv}, I08--I14; instructor prompt, p. 2.}
 \end{frame}
 
 \end{document}

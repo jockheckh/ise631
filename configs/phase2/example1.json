@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "classification": "source_example_1",
+  "source_reference": "Adelman (2007), Example 1, printed p. 653; Bellman (1), D0 (3), fluid primal (4)-(6), and unnumbered LP duals",
+  "seed": null,
+  "max_states": 100,
+  "max_state_action_pairs": 1000,
+  "assertion_tolerance": 1e-7,
+  "instance": {
+    "T": 2,
+    "m": 1,
+    "n": 1,
+    "c": [1],
+    "A": [[1]],
+    "f": [1.0],
+    "p": [[0.5], [0.5]],
+    "name": "adelman_example_1",
+    "provenance": "Adelman (2007), Example 1, printed p. 653"
+  }
+}

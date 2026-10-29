@@ -1,4 +1,4 @@
-"""An integration smoke test for WSL; skips if gurobipy not installed.
+"""An integration smoke test for the selected Windows Python interpreter.
 
 If gurobipy IS installed but its license is unusable this test FAILS by design;
 the research should not silently proceed on a broken solver installation.

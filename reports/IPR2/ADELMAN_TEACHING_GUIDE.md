@@ -216,7 +216,7 @@ E[h_{t+1}(R_{t+1})\mid r,u]
 =\theta_{t+1}+\sum_i b_{t+1,i}r_i
 -\sum_jp_{tj}u_j\sum_i a_{ij}b_{t+1,i}.
 \]
-Move the future affine value to the left. Substituting the affine ansatz (14) gives D1’s constraints (17), p. 652:
+Move the future affine value to the left. Substituting the affine ansatz (14) gives D1's objective (16) and constraints (17), p. 652:
 \[
 \boxed{\theta_t-\theta_{t+1}
 +\sum_i(b_{ti}-b_{t+1,i})r_i
@@ -355,7 +355,7 @@ When all legs have capacity \(c\), the denominator is \(mc\). A high \(\rho\) in
 
 For the stationary \(L=3,T=20\) row of Table 6, the paper reports approximate P1 value 683.57 and fluid value 776.69. It also reports fixed-policy simulation means 503.34 for BPC (marginal standard error 17.15) and 561.13 for DBPC (21.55); with its re-solving convention, BPC 477.55 (17.50) and DBPC 567.78 (20.54). You can say, “In this reported row, the approximate LP figure is below the fluid bound, and the simulated dynamic policy mean is above the static mean.” You cannot conclude a precise paired significance level by subtracting the reported marginal standard errors; the paired-difference variance is not shown.
 
-Crucially, the *policy* called DBPC in Tables 6–8 is not only the bare equation (15) rule. The computational policy includes a one-period lookahead refinement, uses a strict \(>\) convention for ties, and re-solves five evenly spaced times in its default re-solved variant. A clean project comparison should separately test the bare price rule, lookahead, and re-solving so gains are attributed correctly.
+Crucially, the paper defines DBPC through the equation (15) rule and then reports exploring a one-period lookahead refinement and strict \(>\) tie convention. The available wording does not unambiguously attach both refinements to every entry in Tables 6–8. Its default *re-solved* variant uses five evenly spaced solves. A clean project comparison should separately test the bare price rule, lookahead, tie convention, and re-solving so gains are attributed correctly; do not claim exact policy-table replication until the published variant is resolved.
 
 The policy simulations use 100 common arrival paths for compared policies. Common random numbers improve the design of a *paired* comparison, but the paper reports marginal standard errors, not the standard error of each paired policy difference. Published generated input files and seeds are not available here; exact table replication is therefore not presently established.
 

@@ -2,7 +2,7 @@
 
 The project's IPR dates are not yet recorded; do not invent them. Add professor-specific requirements and dates in `DECISIONS.md`.
 
-## Phase 0 — source / WSL / Gurobi preflight (before any claims)
+## Phase 0 — source / Windows Python / Gurobi preflight (before any claims)
 - Ensure instructor PDF, Adelman full paper and appendices are available and hash-indexed; confirm title, page numbering, equations and appendix scope.
 - Test local Python, Gurobi import, **actual solve through the usable license**, and pytest; resolve license issues without exposing credentials. Record a source manifest.
 - Read the literal instructor prompt and audit `requirements.csv` for missing obligations.

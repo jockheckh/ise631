@@ -1,4 +1,4 @@
-# Python environment for research and tests. Resolve/pin versions after WSL preflight.
+# Python environment for research and tests. Resolve/pin versions after Windows preflight.
 gurobipy
 numpy
 pandas
